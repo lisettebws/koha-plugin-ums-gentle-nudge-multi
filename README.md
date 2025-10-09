@@ -1,4 +1,4 @@
-# Unique Collections plugin for Koha
+# Unique Collections Multi-Configuration plugin for Koha
 
 This plugin automates the process of sending patrons to the UMS collections service and updating those patrons in Koha.
 

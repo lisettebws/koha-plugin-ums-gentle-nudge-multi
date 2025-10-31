@@ -1,0 +1,36 @@
+{
+    "/configs": {
+        "get": {
+            "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::REST::V1::Configs#list",
+            "operationId": "listUMSConfigs",
+            "tags": [
+                "configs"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "responses": {
+                "200": {
+                    "description": "A list of configurations",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "configs": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "config_id": {
+                                            "type": "string",
+                                            "description": "Unique configuration identifier"
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+}

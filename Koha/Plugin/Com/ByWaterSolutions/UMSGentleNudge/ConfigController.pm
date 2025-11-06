@@ -60,7 +60,7 @@ sub list {
 
         return $c->render(
             status  => 200,
-            openapi => { config => \@config_data }
+            openapi => { configs => \@config_data }
         );
     }
     catch {

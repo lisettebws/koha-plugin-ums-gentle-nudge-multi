@@ -70,7 +70,7 @@ jobs:
     - name: Install plugins in KTD
       run: |
         export KTD_HOME=$(pwd)/../koha-testing-docker
-        ktd --name  umstest otest --shell --run "cd /kohadevbox/koha && perl misc/devel/install_plugins.pl"
+        ktd --name  umstest --shell --run "cd /kohadevbox/koha && perl misc/devel/install_plugins.pl"
 
     - name: Run plugin tests
       run: |

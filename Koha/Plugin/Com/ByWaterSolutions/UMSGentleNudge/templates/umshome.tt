@@ -44,10 +44,6 @@
                                 <thead>
                                     <tr>
                                         <th>Configuration ID</th>
-                                        <th>Type</th>
-                                        <th>Enabled</th>
-                                        <th>SFTP Information</th>
-                                        <th data-class-name="actions no-export">Actions</th>
                                       </tr>
                                   </thead>
                                 <tbody id="all-tbody">
@@ -523,39 +519,42 @@ If using another category, the authorized values should be 0 and 1, but the desc
 
         $(document).ready(function() {
             //Initialize DataTables
-            configTable = $('#config_table').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "columnDefs": [
-                    {"orderable": false, "targets": -1} //Disable sorting on Actions column
+                $('#config_table').kohaTable({
+                "ajax": {
+                    url: '/api/v1/contrib/ums/configs/list'
+                },
+                "paging": false,
+                "searching": false,
+                "ordering": false,
+                "columns": [
+                    {data: "config_id",
+                    searchable: false,
+                    orderable:false,
+                    },
                 ]
             });
-            branchTable = $('#branch_table').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "columnDefs": [
-                    {"orderable": false, "targets": -1} //Disable sorting on Actions column
-                ]
-            });
-            groupTable = $('#group_table').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "columnDefs": [
-                    {"orderable": false, "targets": -1} //Disable sorting on Actions column
-                ]
-            });
+            // branchTable = $('#branch_table').kohaTable({
+            //     "paging": false,
+            //     "lengthChange": true,
+            //     "searching": true,
+            //     "ordering": true,
+            //     "info": true,
+            //     "autoWidth": false,
+            //     "columnDefs": [
+            //         {"orderable": false, "targets": -1} //Disable sorting on Actions column
+            //     ]
+            // });
+            // groupTable = $('#group_table').kohaTable({
+            //     "paging": true,
+            //     "lengthChange": true,
+            //     "searching": true,
+            //     "ordering": true,
+            //     "info": true,
+            //     "autoWidth": false,
+            //     "columnDefs": [
+            //         {"orderable": false, "targets": -1} //Disable sorting on Actions column
+            //     ]
+            // });
             // Load all data on page load
             loadConfigs();
             
@@ -568,18 +567,18 @@ If using another category, the authorized values should be 0 and 1, but the desc
             $('#config_table').hide();
 
 
-            $.ajax({
-                url: '/api/v1/contrib/ums/configs#list',
-                method: 'GET',
-                success: function(data) {
-                    populateConfigTable(data.configs);
-                },
-                error: function(xhr, status, error) {
-                    showMessage('Failed to load configs: ' + error, 'danger');
-                    $('#config_table').show();
-                    $('#config_loading').hide();
-                }
-            });
+            // $.ajax({
+            //     url: '/api/v1/contrib/ums/configs/list',
+            //     method: 'GET',
+            //     success: function(data) {
+            //         populateConfigTable(data.configs);
+            //     },
+            //     error: function(xhr, status, error) {
+            //         showMessage('Failed to load configs: ' + error, 'danger');
+            //         $('#config_table').show();
+            //         $('#config_loading').hide();
+            //     }
+            // });
         function populateConfigTable(config) {
             ConfigTable.clear();
 
@@ -589,7 +588,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                     : '<span class="badge bg-secondary">Disabled</span>';
 
                 // Use name, description, or command snippet for identification
-                let configIdentifier = config.id;
+                let configIdentifier = config.config_id;
 
                 // Build description cell with name at top if present
                 let descriptionHtml = '';
@@ -598,13 +597,13 @@ If using another category, the authorized values should be 0 and 1, but the desc
                 }
 
                 let actions = `
-                    <button class="btn btn-xs btn-primary edit-config" data-config-id="${config.id}">
+                    <button class="btn btn-xs btn-primary edit-config" data-config-id="${config.config_id}">
                         <i class="fa fa-edit"></i> Edit
                     </button>
                     <button class="btn btn-xs ${config.enabled ? 'btn-warning disable-config' : 'btn-success enable-config'}" data-config-id="${config.id}">
                         <i class="fa ${config.enabled ? 'fa-pause' : 'fa-play'}"></i> ${config.enabled ? 'Disable' : 'Enable'}
                     </button>
-                    <button class="btn btn-xs btn-danger delete-config" data-config-id="${config.id}" data-config-desc="${config.id}">
+                    <button class="btn btn-xs btn-danger delete-config" data-config-id="${config.config_id}" data-config-desc="${config.config_id}">
                         <i class="fa fa-trash"></i> Delete
                     </button>
                 `;

@@ -143,7 +143,7 @@ sub configure {
     my $dbh = C4::Context->dbh;
 
     my $config_table = $self->get_qualified_table_name('config');
-    my $configs = Koha::UMSConfigs->get_configs();
+    my $configs = Koha::UMSConfigs->search();
     my $action = $cgi->param('op');
     my $config = $cgi->param('config');
     my $groups = Koha::Library::Groups->search({branchcode => undef}, { order_by => ['title'] } );

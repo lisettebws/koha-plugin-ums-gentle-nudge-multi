@@ -807,7 +807,6 @@ or false if it failed.
 =cut
 
 sub install() {
-    warn "warn install";
     my ( $self, $args ) = @_;
 
     my $dbh = C4::Context->dbh;
@@ -818,32 +817,32 @@ sub install() {
          C4::Context->dbh->do("
         CREATE TABLE IF NOT EXISTS $configuration (
                     `config_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'unique id for each config',
-                    `config_name` VARCHAR(15) NULL DEFAULT NULL COMMENT 'Name of the group or library',
-                    `branch` VARCHAR(10) NULL DEFAULT NULL COMMENT 'Selected branch',
-                    `config_group` int(11) NULL DEFAULT NULL COMMENT 'Selected group',
-                    `day_of_week` INT(1) NOT NULL DEFAULT '0' COMMENT 'Which day of the week',
-                    `patron_categories` VARCHAR(191) NULL DEFAULT NULL COMMENT 'Comma delimited list of patron category codes that are eligible for collections. e.g. CAT1,CAT2,CAT3. Leave blank for all categories.',
-                    `threshold` INT(11) NOT NULL DEFAULT '25.00' COMMENT 'Minimum amount owed to be sent to collections.',
-                    `processing_fee` INT(11) NULL DEFAULT '10.00' COMMENT 'Amount of the processing fee added to the patron account',
-                    `collections_flag` VARCHAR(191) NULL DEFAULT NULL COMMENT 'Specify how the patron is flagged as being in collections. If using a patron attribute, it is recommended that the attribute be mapped to the YES_NO category.',
-                    `exemptions_flag` VARCHAR (191) NULL DEFAULT NULL COMMENT 'Patrons with the selected attribute will not be flagged.',
-                    `fees_newer` INT(11) NOT NULL DEFAULT '60' COMMENT 'fees newer than this number of days will be totaled to check if a patron should be sent to collections',
-                    `fees_older` INT(11) NOT NULL DEFAULT '90' COMMENT 'fewers older than this number of days will be totaled to check if a patron should be sent to collections',
-                    `ignore_before` DATE NULL DEFAULT NULL COMMENT 'fees created before this date will not be part of the total to check if a patron should be sent to collections',
-                    `clear_below` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0, patrons who have paid their fines to below the threshold will not be removed from collections.',
-                    `clear_threshold` INT(11) NOT NULL DEFAULT '0' COMMENT 'The patron will be cleared from collections if if they do not exceed this threshold.',
-                    `restriction` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Newly flagged patrons will have a restriction added to their account.',
-                    `remove_minors` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'If 1, patrons under the age of 18 years old will not be included on the collections report.',
-                    `unique_email` VARCHAR(191) NULL DEFAULT NULL COMMENT 'If email information is set, plugin will email files to the given addresses.',
-                    `additional_email` VARCHAR(191) NULL DEFAULT NULL COMMENT 'If you would like to send to another email address as well',
-                    `sftp_host` VARCHAR(191),
-                    `sftp_user` VARCHAR(191) NULL DEFAULT NULL,
-                    `sftp_password` mediumtext NULL DEFAULT NULL,
-                    `enabled` INT(1) NOT NULL DEFAULT '0' COMMENT 'If there is a default configuration, all branches/groups will be included. 0=disabled, 1=enabled',
-                    `config_type` VARCHAR(15) NOT NULL DEFAULT 'global' COMMENT 'Options are global (can only have 1 global), branch, or group',
-                    `debit_type` VARCHAR(191) NOT NULL DEFAULT 'Manual',
-                    `created_at`DATE NULL DEFAULT NULL COMMENT 'When the config was configured',
-                    `updated_at` DATE NULL COMMENT 'When the config was last updated',
+                    `config_name` VARCHAR(15) NULL COMMENT 'Name of the group or library',
+                    `branch` VARCHAR(10) NULL COMMENT 'Selected branch',
+                    `config_group` int(11) NULL COMMENT 'Selected group',
+                    `day_of_week` int(1)  NULL COMMENT 'Which day of the week',
+                    `patron_categories` VARCHAR(191) NULL COMMENT 'Comma delimited list of patron category codes that are eligible for collections. e.g. CAT1,CAT2,CAT3. Leave blank for all categories.',
+                    `threshold` int(11) NULL COMMENT 'Minimum amount owed to be sent to collections.',
+                    `processing_fee` int(11) NULL COMMENT 'Amount of the processing fee added to the patron account',
+                    `collections_flag` VARCHAR(191) NULL COMMENT 'Specify how the patron is flagged as being in collections. If using a patron attribute, it is recommended that the attribute be mapped to the YES_NO category.',
+                    `exemptions_flag` VARCHAR (191) NULL COMMENT 'Patrons with the selected attribute will not be flagged.',
+                    `fees_newer` int(11) NULL COMMENT 'fees newer than this number of days will be totaled to check if a patron should be sent to collections',
+                    `fees_older` int(11) NULL COMMENT 'fewers older than this number of days will be totaled to check if a patron should be sent to collections',
+                    `ignore_before` date NULL COMMENT 'fees created before this date will not be part of the total to check if a patron should be sent to collections',
+                    `clear_below` tinyint(1) NULL COMMENT '0, patrons who have paid their fines to below the threshold will not be removed from collections.',
+                    `clear_threshold` int(11) NULL COMMENT 'The patron will be cleared from collections if if they do not exceed this threshold.',
+                    `restriction` tinyint(1) NULL COMMENT 'Newly flagged patrons will have a restriction added to their account.',
+                    `remove_minors` tinyint(1) NULL COMMENT 'If 1, patrons under the age of 18 years old will not be included on the collections report.',
+                    `unique_email` VARCHAR(191) NULL COMMENT 'If email information is set, plugin will email files to the given addresses.',
+                    `additional_email` VARCHAR(191) NULL COMMENT 'If you would like to send to another email address as well',
+                    `sftp_host` VARCHAR(191) NULL,
+                    `sftp_user` VARCHAR(191) NULL,
+                    `sftp_password` mediumtext NULL,
+                    `enabled` int(1) NOT NULL DEFAULT 0 COMMENT 'If there is a default configuration, all branches/groups will be included. 0=disabled, 1=enabled',
+                    `config_type` VARCHAR(15) DEFAULT 'global' NOT NULL COMMENT 'Options are global (can only have 1 global), branch, or group',
+                    `debit_type` VARCHAR(191) NOT NULL DEFAULT 'manual',
+                    `created_at`datetime NOT NULL DEFAULT current_timestamp()COMMENT 'When the config was configured',
+                    `updated_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'When the config was last updated',
                     PRIMARY KEY (`config_id`),
                     KEY `branch` (`branch`),
                     KEY `config_group` (`config_group`)
@@ -857,8 +856,6 @@ sub install() {
 
         my $default_config  = $dbh->selectcol_arrayref( "SELECT config_id FROM $configuration" );
     return 1;
-    my $template_plugin = 
-    warn "warn install end" . $default_config . "!";
 }
 
 =head3 upgrade

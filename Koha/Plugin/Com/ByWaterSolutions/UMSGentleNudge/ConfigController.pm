@@ -67,32 +67,32 @@ Create a new config
 sub add {
     my $c = shift->openapi->valid_input or return;
 
-warn (Dumper($c->param('sftp_host') ));
-    my $additional_email = $c->param('additional_email');
-    my $branch = $c->param('branch');
-    my $clear_below = $c->param('clear_below');
-    my $clear_threshold = $c->param('clear_threshold');
-    my $collections_flag = $c->param('collections_flag');
-    my $config_group = $c->param('config_group');
-    my $config_id = $c->param('config_id');
-    my $config_name = $c->param('config_name');
-    my $config_type = $c->param('config_type');
-    my $day_of_week = $c->param('day_of_week');
-    my $debit_type = $c->param('debit_type');
-    my $enabled = $c->param('enabled');
-    my $exemptions_flag = $c->param('exemptions_flag');
-    my $fees_newer = $c->param('fees_newer');
-    my $fees_older = $c->param('fees_older');
-    my $ignore_before = $c->param('ignore_before');
-    my $patron_categories = $c->param('day_of_week');
-    my $processing_fee = $c->param('processing_fee');
-    my $remove_minors = $c->param('remove_minors');
-    my $restriction = $c->param('restriction');
-    my $sftp_host = $c->param('sftp_host');
-    my $sftp_password = $c->param('sftp_password');
-    my $sftp_user = $c->param('sftp_user');
-    my $threshold = $c->param('threshold');
-    my $unique_email = $c->param('unique_email');
+warn (Dumper($c->req->json->{'additional_email'}));
+    my $additional_email = $c->req->json->{'additional_email'};
+    my $branch = $c->req->json->{'branch'};
+    my $clear_below = $c->req->json->{'clear_below'};
+    my $clear_threshold = $c->req->json->{'clear_threshold'};
+    my $collections_flag = $c->req->json->{'collections_flag'};
+    my $config_group = $c->req->json->{'config_group'};
+    my $config_id = $c->req->json->{'config_id'};
+    my $config_name = $c->req->json->{'config_name'};
+    my $config_type = $c->req->json->{'config_type'};
+    my $day_of_week = $c->req->json->{'day_of_week'};
+    my $debit_type = $c->req->json->{'debit_type'};
+    my $enabled = $c->req->json->{'enabled'};
+    my $exemptions_flag = $c->req->json->{'exemptions_flag'};
+    my $fees_newer = $c->req->json->{'fees_newer'};
+    my $fees_older = $c->req->json->{'fees_older'};
+    my $ignore_before = $c->req->json->{'ignore_before'};
+    my $patron_categories = $c->req->json->{'day_of_week'};
+    my $processing_fee = $c->req->json->{'processing_fee'};
+    my $remove_minors = $c->req->json->{'remove_minors'};
+    my $restriction = $c->req->json->{'restriction'};
+    my $sftp_host = $c->req->json->{'sftp_host'};
+    my $sftp_password = $c->req->json->{'sftp_password'};
+    my $sftp_user = $c->req->json->{'sftp_user'};
+    my $threshold = $c->req->json->{'threshold'};
+    my $unique_email = $c->req->json->{'unique_email'};
     return try {
         my $config = Koha::UMSConfig->new({
             additional_email => $additional_email,

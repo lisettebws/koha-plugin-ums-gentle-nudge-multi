@@ -274,16 +274,13 @@
                 }
             }
         },
-        "post": {
-            "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#add",
-            "operationId": "addUMSConfig",
-            "description": "Endpoint used to add configs",
-            "tags": [
-                "configs"
-            ],
-            "produces": [
-                "application/json"
-                  ],
+     "post": {
+      "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#add",
+      "operationId": "addConfig",
+      "tags": ["configs"],
+      "produces": [
+        "application/json"
+      ],
       "parameters": [{
           "name": "body",
           "in": "body",
@@ -292,348 +289,150 @@
           "schema": {
             "type": "object",
             "properties": {
-                  "config_id": {
-                          "type": "string",
-                          "description": "Unique configuration identifier"
-                      },
-                      "config_name": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Name of the configuration"
-                      },
-                      "day_of_week": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Day of week to run"
-                      },
-                      "patron_categories": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "threshold": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "processing_fee": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "collections_flag": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "exemptions_flag": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "fees_newer": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "fees_older": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "ignore_before": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "clear_below": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "clear_threshold": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "restriction": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "remove_minors": {
-                          "type": "boolean",
-                          "description": "Will minors be removed"
-                      },
-                      "unique_email": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Email from unique"
-                      },
-                      "additional_email": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Optional email to send to"
-                      },
-                      "sftp_host": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "The host for SFTP"
-                      },
-                      "sftp_user": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "The user for SFTP"
-                      },
-                      "sftp_password": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "The password for SFTP"
-                      },
-                      "enabled": {
-                          "type": "boolean",
-                          "description": "Whether the job is enabled"
-                      },
-                      "config_type": {
-                          "type": "string",
-                          "description": "What type of config is it"
-                      },
-                      "debit_type": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "What debit type should be used"
-                      },
-                      "created_at": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Job creation timestamp"
-                      },
-                      "updated_at": {
-                          "type": [
-                              "string",
-                              "null"
-                          ],
-                          "description": "Job last update timestamp"
-                      }
-                        }
-                    }
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "The configuration",
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "additional_email": {
-                                "type": [
-                                    "string", "null"
-                                ],
-                                "description": "Optional email to send to"
-                            },
-                            "branch": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ]
-                            },
-                            "clear_below": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "clear_threshold": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "collections_flag": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "config_id": {
-                                "type": "string",
-                                "description": "Unique configuration identifier"
-                            },
-                            "config_group": {
-                                "type": ["string", "null"],
-                                "description": "Group id"
-                            },
-                            "config_name": {
-                                "type": "string",
-                                "description": "Name of the configuration"
-                            },
-                            "config_type": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "What type of config is it"
-                            },
-                            "day_of_week": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Day of week to run"
-                            },
-                            "debit_type": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "What debit type should be used"
-                            },
-                            "fees_newer": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "fees_older": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "enabled": {
-                                "type": "boolean",
-                                "description": "Whether the job is enabled"
-                            },
-                            "exemptions_flag": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "ignore_before": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "patron_categories": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "processing_fee": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "remove_minors": {
-                                "type": "boolean",
-                                "description": "Will minors be removed"
-                            },
-                            "restriction": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "threshold": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "unique_email": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Email from unique"
-                            },
-                            "sftp_host": {
-                                "type": [
-                                    "string"
-                                ],
-                                "description": "The host for SFTP"
-                            },
-                            "sftp_user": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "The user for SFTP"
-                            },
-                            "sftp_password": {
-                                "type": [
-                                    "string" ,
-                                    "null"
-                                ],
-                                "description": "The password for SFTP"
-                            }
-                        }
-                    }
-                },
-                "401": {
-                    "description": "Authentication required"
-                },
-                "403": {
-                    "description": "Access forbidden"
-                },
-                "500": {
-                    "description": "Internal server error"
-                }
+              "config_id": {
+                "description": "Unique config id",
+                "type": "integer"
+              },
+              "config_type": {
+                "description": "Config type",
+                "type": "string"
+              },
+              "branch": {
+                "description": "Optional branch code",
+                "type": "string"
+              },
+              "additional_email": {
+                "description": "Optional additional email",
+                "type": "string"
+              },
+              "clear_below": {
+                "description": "Patrons who have dropped should be removed",
+                "type": "boolean"
+              },
+              "clear_threshold": {
+                "description": "Amount",
+                "type": "string"
+              }
             }
+          }
         }
-    }}
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of permissions"
+        },
+        "403": {
+          "description": "You are not authorized to add permissions"
+        }
+      }
+    }
+  },
+  "/permissions/{permission_id}": {
+    "get": {
+      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#get_permission",
+      "operationId": "getPermission",
+      "tags": ["permissions"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "permission_id",
+          "in": "path",
+          "description": "Search on permission id",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of permissions"
+        }
+      }
+    },
+    "put": {
+      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#update_permission",
+      "operationId": "updatePermission",
+      "tags": ["permissions"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "permission_id",
+          "in": "path",
+          "description": "Search on permission id",
+          "required": true,
+          "type": "integer"
+        },{
+          "name": "body",
+          "in": "body",
+          "description": "Updated supplier id",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contract_id": {
+                "description": "Permission contract id",
+                "type": "integer"
+              },
+              "permission_type": {
+                "description": "Search on permission typr",
+                "type": "string"
+              },
+              "permission_code": {
+                "description": "Search on permission code",
+                "type": "string"
+              },
+              "permission_date": {
+                "description": "Search on permission date",
+                "type": "string"
+              },
+              "form_signed": {
+                "description": "Search on form signed",
+                "type": "boolean"
+              },
+              "note": {
+                "description": "Search on permission note",
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of permissions"
+        },
+        "403": {
+          "description": "You are not authorized to update permissions"
+        }
+      }
+    },
+    "delete": {
+      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#delete_permission",
+      "operationId": "deletePermission",
+      "tags": ["permissions"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "permission_id",
+          "in": "path",
+          "description": "Permission id to delete",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "Permission deleted"
+        },
+        "403": {
+          "description": "You are not authorized to delete permissions"
+        }
+      }
+    }
+  }
+}

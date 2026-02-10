@@ -841,7 +841,7 @@ sub install() {
                     `enabled` int(1) NOT NULL DEFAULT 0 COMMENT 'If there is a default configuration, all branches/groups will be included. 0=disabled, 1=enabled',
                     `config_type` VARCHAR(15) DEFAULT 'global' NOT NULL COMMENT 'Options are global (can only have 1 global), branch, or group',
                     `debit_type` VARCHAR(191) NOT NULL DEFAULT 'manual',
-                    `created_at`datetime NOT NULL DEFAULT current_timestamp()COMMENT 'When the config was configured',
+                    `created_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'When the config was configured',
                     `updated_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'When the config was last updated',
                     PRIMARY KEY (`config_id`),
                     KEY `branch` (`branch`),

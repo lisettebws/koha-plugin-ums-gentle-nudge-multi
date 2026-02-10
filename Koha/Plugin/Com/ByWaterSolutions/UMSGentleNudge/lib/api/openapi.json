@@ -327,28 +327,6 @@
       }
     }
   },
-  "/permissions/{permission_id}": {
-    "get": {
-      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#get_permission",
-      "operationId": "getPermission",
-      "tags": ["permissions"],
-      "produces": [
-        "application/json"
-      ],
-      "parameters": [{
-          "name": "permission_id",
-          "in": "path",
-          "description": "Search on permission id",
-          "required": true,
-          "type": "integer"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "A list of permissions"
-        }
-      }
-    },
     "put": {
       "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#update_permission",
       "operationId": "updatePermission",
@@ -398,9 +376,6 @@
           }
         }
       ],
-      "produces": [
-        "application/json"
-      ],
       "responses": {
         "200": {
           "description": "A list of permissions"
@@ -435,4 +410,3 @@
       }
     }
   }
-}

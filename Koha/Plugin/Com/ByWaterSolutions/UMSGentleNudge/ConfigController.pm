@@ -74,6 +74,7 @@ warn (Dumper($c->req->json->{'additional_email'}));
     my $clear_threshold = $c->req->json->{'clear_threshold'};
     my $collections_flag = $c->req->json->{'collections_flag'};
     my $config_group = $c->req->json->{'config_group'};
+    my $created_at = $c->req->json->{'created_at'};
     my $config_id = $c->req->json->{'config_id'};
     my $config_name = $c->req->json->{'config_name'};
     my $config_type = $c->req->json->{'config_type'};
@@ -104,6 +105,7 @@ warn (Dumper($c->req->json->{'additional_email'}));
             config_id => $config_id,
             config_name => $config_name,
             config_type => $config_type,
+            created_at  => $created_at,
             day_of_week => $day_of_week,
             debit_type => $debit_type,
             enabled => $enabled,

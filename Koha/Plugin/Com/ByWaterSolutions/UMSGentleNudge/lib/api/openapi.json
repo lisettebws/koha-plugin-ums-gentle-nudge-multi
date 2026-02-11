@@ -243,13 +243,7 @@
                                             ],
                                             "description": "What debit type should be used"
                                         },
-                                        "created_at": {
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ],
-                                            "description": "Job creation timestamp"
-                                        },
+
                                         "updated_at": {
                                             "type": [
                                                 "string",
@@ -326,87 +320,6 @@
         }
       }
     }
-  },
-    "put": {
-      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#update_permission",
-      "operationId": "updatePermission",
-      "tags": ["permissions"],
-      "produces": [
-        "application/json"
-      ],
-      "parameters": [{
-          "name": "permission_id",
-          "in": "path",
-          "description": "Search on permission id",
-          "required": true,
-          "type": "integer"
-        },{
-          "name": "body",
-          "in": "body",
-          "description": "Updated supplier id",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "contract_id": {
-                "description": "Permission contract id",
-                "type": "integer"
-              },
-              "permission_type": {
-                "description": "Search on permission typr",
-                "type": "string"
-              },
-              "permission_code": {
-                "description": "Search on permission code",
-                "type": "string"
-              },
-              "permission_date": {
-                "description": "Search on permission date",
-                "type": "string"
-              },
-              "form_signed": {
-                "description": "Search on form signed",
-                "type": "boolean"
-              },
-              "note": {
-                "description": "Search on permission note",
-                "type": "string"
-              }
-            }
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "A list of permissions"
-        },
-        "403": {
-          "description": "You are not authorized to update permissions"
-        }
-      }
-    },
-    "delete": {
-      "x-mojo-to": "Com::ByWaterSolutions::Contracts::PermissionController#delete_permission",
-      "operationId": "deletePermission",
-      "tags": ["permissions"],
-      "produces": [
-        "application/json"
-      ],
-      "parameters": [{
-          "name": "permission_id",
-          "in": "path",
-          "description": "Permission id to delete",
-          "required": true,
-          "type": "integer"
-        }
-      ],
-      "responses": {
-        "204": {
-          "description": "Permission deleted"
-        },
-        "403": {
-          "description": "You are not authorized to delete permissions"
-        }
-      }
-    }
+  }
+
   }

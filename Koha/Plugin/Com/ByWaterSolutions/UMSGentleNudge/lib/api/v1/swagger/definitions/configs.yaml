@@ -70,9 +70,7 @@ properties:
   debit_type: 
       type: string,
       description: What debit type should be used
-  created_at: 
-      type: string,
-      description: Job creation timestamp
+
   updated_at: 
       type: string,
       description: Job last update timestamp

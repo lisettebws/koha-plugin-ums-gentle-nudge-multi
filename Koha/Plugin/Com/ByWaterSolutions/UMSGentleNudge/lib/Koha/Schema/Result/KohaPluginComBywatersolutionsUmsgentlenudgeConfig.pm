@@ -214,21 +214,13 @@ Options are global (can only have 1 global), branch, or group
   is_nullable: 0
   size: 191
 
-=head2 created_at
-
-  data_type: 'date'
-  datetime_undef_if_invalid: 1
-  default_value: 'current_timestamp()'
-  is_nullable: 1
-
-When the config was configured
 
 =head2 updated_at
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   default_value: 'current_timestamp()'
-  is_nullable: 1
+  is_nullable: 0
 
 When the config was last updated
 
@@ -294,20 +286,6 @@ __PACKAGE__->add_columns(
     default_value => "manual",
     is_nullable => 0,
     size => 191,
-  },
-  "created_at",
-  {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
-    is_nullable => 0,
-  },
-  "updated_at",
-  {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
-    is_nullable => 0,
   },
 );
 

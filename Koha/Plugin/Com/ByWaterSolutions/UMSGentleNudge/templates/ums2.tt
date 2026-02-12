@@ -445,7 +445,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
             //Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
-            var configtype = button.getAttribute('data-bs-type')
+             configtype = button.getAttribute('data-bs-type')
             var umsmode = button.getAttribute('data-bs-mode')
 
             //update the modal content
@@ -491,10 +491,18 @@ If using another category, the authorized values should be 0 and 1, but the desc
             $('#editconfig').on('click', function() {
                 let configId = $(this).data('data-config-id');
                 openConfigModal;
+            });
+
+            // Form submissions
+            $('#config_form').on('submit', function(e) {
+                e.preventDefault();
+                saveConfig();
             })
+
             //Initialize DataTables
                 function loadAll() {
                 $('#config_table').kohaTable({
+                    "bDestroy": true,
                     "ajax": {
                         url: '/api/v1/contrib/ums/configs',
                         method: 'GET'
@@ -617,14 +625,20 @@ If using another category, the authorized values should be 0 and 1, but the desc
             });
                 };
             function saveConfig() {
-                
+                if ($configtype = "branch") {
+                    umsbranch =$('#umsconfig_id_select').val();
+                };
+                if ($configtype = "group") {
+                    umsgroup = $('#umsconfig_id_select').val();
+                }
+                console.log(configtype);
                 let configData = {
                     additional_email: $('#additional_email').val(),
-                    branch: $('#umsconfig_id_select').val(),
+                    branch: umsbranch,
                     clear_below: $('#clear_below').val(),
                     clear_threshold: $('#clear_threshold').val(),
                     collections_flag: $('#collections_flag').val(),
-                    config_group: $('#umsconfig_id_select').val(),
+                    config_group: umsgroup,
                     config_name: $('#config_name').val(),
                     config_type: configtype,
                     day_of_week: $('#run_on_dow').val(),
@@ -652,19 +666,19 @@ If using another category, the authorized values should be 0 and 1, but the desc
                 $.ajax({
                         url: url,
                     method: method,
-                    data: JSON.stringify(jobData),
+                    data: JSON.stringify(configData),
                     contentType: 'application/json',
                     success: function(data) {
-                        showMessage(configId ? 'Config updated successfully' : 'Config created successfully', 'success');
+                        //showMessage(configId ? 'Config updated successfully' : 'Config created successfully', 'success');
                         $('#UMSConfigModel').modal('hide');
-                        loadConfigs();
+                        loadAll();
                     },
                     error: function(xhr, status, error) {
                         let message = 'Failed to save config';
                         if (xhr.responseJSON && xhr.responseJSON.error) {
                             message += ': ' + xhr.responseJSON.error;
                         }
-                        showMessage(message, 'danger');
+                        //showMessage(message, 'danger');
                     }
                   });
               }

@@ -1,5 +1,5 @@
 {
-    "/configs/": {
+    "/configs": {
         "get": {
             "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#list",
             "operationId": "listUMSConfigs",
@@ -313,13 +313,101 @@
       ],
       "responses": {
         "200": {
-          "description": "A list of permissions"
+          "description": "A list of configurations"
         },
         "403": {
-          "description": "You are not authorized to add permissions"
+          "description": "You are not authorized to add configurations"
+        }
+      }
+    }
+  },
+ "/configs/{config_id}": {
+    "get": {
+      "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#get",
+      "operationId": "getConfig",
+      "tags": ["configs"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "config_id",
+          "in": "path",
+          "description": "Search on permission id",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of configs"
+        }
+      }
+    },
+    "put": {
+      "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#update",
+      "operationId": "udpateConfig",
+      "tags": ["configs"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "config_id",
+          "in": "path",
+          "description": "Search on config id",
+          "required": true,
+          "type": "integer"
+        },{
+          "name": "body",
+          "in": "body",
+          "description": "Updated config id",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "contract_id": {
+                "description": "config id",
+                "type": "integer"
+              },
+              "config_type": {
+                "description": "Search on config type",
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of configurations"
+        },
+        "403": {
+          "description": "You are not authorized to update configurations"
+        }
+      }
+    },
+    "delete": {
+      "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#delete",
+      "operationId": "deleteConfig",
+      "tags": ["config"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+          "name": "config_id",
+          "in": "path",
+          "description": "Config id to delete",
+          "required": true,
+          "type": "integer"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "Config deleted"
+        },
+        "403": {
+          "description": "You are not authorized to delete config"
         }
       }
     }
   }
-
-  }
+}

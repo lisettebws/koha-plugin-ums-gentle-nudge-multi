@@ -214,16 +214,6 @@ Options are global (can only have 1 global), branch, or group
   is_nullable: 0
   size: 191
 
-
-=head2 updated_at
-
-  data_type: 'date'
-  datetime_undef_if_invalid: 1
-  default_value: 'current_timestamp()'
-  is_nullable: 0
-
-When the config was last updated
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -302,8 +292,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("config_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07051 @ 2026-02-10 16:10:45
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jxZF6pm/rW8+7qiEN2Llow
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2026-02-11 15:53:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ycVOadIgmLkPBKbb+m+I6A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

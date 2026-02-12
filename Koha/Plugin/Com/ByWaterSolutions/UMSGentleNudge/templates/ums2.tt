@@ -7,10 +7,10 @@
 <div id="message"></div>
     <body>
         <div id="toolbar" class="btn-toolbar">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#newUMSConfig" data-bs-type="group"class="btn btn-default" id="newconfig">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode ="New" data-bs-type="group" class="btn btn-default" id="newconfig">
                 <i class="fa fa-plus"></i> New group configuration
               </button>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#newUMSConfig" data-bs-type="branch"class="btn btn-default" id="newconfig">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="New" data-bs-type="branch"class="btn btn-default" id="newconfig">
                 <i class="fa fa-plus"></i> New branch configuration
               </button>
           </div>
@@ -97,7 +97,7 @@
           </div>
 </div>
  <!-- New Config modal -->
-    <div class="modal fade modal-lg" id="newUMSConfig" aria-labelledby="newUMSConfigLabel" aria-hidden="true">
+    <div class="modal fade modal-lg" id="UMSConfigModel" aria-labelledby="UMSConfigLabel" aria-hidden="true">
         <form  id="config_form" method="post" class="form">
             <input type="hidden" name="class" value="[% CLASS %]"/>
             <input type="hidden" name="method" value="[% METHOD %]"/>
@@ -106,7 +106,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="newUMSConfigLabel">New Configuration</h4>
+                        <h4 class="modal-title" id="UMSConfigLabel"></h4>
                       </div>
                     <div class="modal-body">
                         <div class="row">
@@ -387,9 +387,9 @@ If using another category, the authorized values should be 0 and 1, but the desc
                       </div> <!-- /.modal-body -->
                     <fieldset class="action">
                          <input type="hidden" name="op" value="cud-save" />
-                         <input type="submit" value="Save configuration" />
+                         <input type="submit" value="Save" />
                           [% INCLUDE 'csrf-token.inc' %]
-                         <a class="cancel" href="/cgi-bin/koha/plugins/plugins-home.pl">Cancel</a>
+                         <a class="cancel" href="/cgi-bin/koha/plugins/run.pl?class=Koha%3A%3APlugin%3A%3ACom%3A%3AByWaterSolutions%3A%3AUMSGentleNudge&method=configure">Cancel</a>
                     </fieldset>
 
 
@@ -440,20 +440,24 @@ If using another category, the authorized values should be 0 and 1, but the desc
     [% INCLUDE 'select2.inc' %]
     [% INCLUDE 'calendar.inc' %]
         <script>
-        var newUMSConfig = document.getElementById('newUMSConfig')
-        newUMSConfig.addEventListener('show.bs.modal', function (event){
+        var UMSConfigModel = document.getElementById('UMSConfigModel')
+        UMSConfigModel.addEventListener('show.bs.modal', function (event){
             //Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
             var configtype = button.getAttribute('data-bs-type')
+            var umsmode = button.getAttribute('data-bs-mode')
+
             //update the modal content
-            var modalTitle = newUMSConfig.querySelector('.modal-title')
-            var modalTypeInput = newUMSConfig.querySelector('.modal-type')
+            //These get information from the button that was clicked
+            var modalTitle = UMSConfigModel.querySelector('.modal-title')
+            var modalTypeInput = UMSConfigModel.querySelector('.modal-type')
             var modalTypeSelector = modalTypeSelector + configtype
             var modalIDSelect = '.' + configtype + '_option';
-            console.log('modaltitle: ' + modalTitle + ' / modalTypeInput: ' + modalTypeInput + ' / modalTypeSelector: '  + modalTypeSelector  + ' / modalIDSelect: ' + modalIDSelect);
-            modalTitle.textContent = 'New ' + configtype + ' configuration'
-            var modalSelector = newUMSConfig.querySelector('.modal-select-type');
+            console.log('mode:' + umsmode + '/modaltitle: ' + modalTitle + ' / modalTypeInput: ' + modalTypeInput + ' / modalTypeSelector: '  + modalTypeSelector  + ' / modalIDSelect: ' + modalIDSelect);
+            //Sets the title dynamicly: Mode (New/Edit) type(global, group, or branch) configuration
+            modalTitle.textContent = umsmode + ' ' + configtype + ' configuration'
+            var modalSelector = UMSConfigModel.querySelector('.modal-select-type');
             modalSelector.textContent = 'Select a ' + configtype
             
         //show the appropriate choices in the branch/group dropdown
@@ -462,7 +466,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
             $("." + configtype +"_option").removeAttr('hidden');
            }
            );
-           newUMSConfig.addEventListener('hide.bs.modal', function (){
+           UMSConfigModel.addEventListener('hide.bs.modal', function (){
             $("." + configtype +"_option").each(function(){
                 $("." + configtype +"_option").attr("hidden", "true");
             }
@@ -472,46 +476,244 @@ If using another category, the authorized values should be 0 and 1, but the desc
 
 
         $(document).ready(function() {
-            //Initialize DataTables
-                $('#config_table').kohaTable({
-                "ajax": {
-                    url: '/api/v1/contrib/ums/configs',
-                    method: 'GET'
-                },
-                "columns": [
-                    {data: "config_id",
-                    title: "Configuration ID"
-                    },
-                    {data: "config_type",
-                    render: function (data, type, row) {
-                        if (data === "global") {
-                            return 'Global configuration'}
-                        if (data === "branch") {
-                            return 'Branch configuration'}
-                        if (data === "group") {
-                            return 'Group configuration'}
-                        },
-                    title: "Configuration Type"
-                    },
-                    {data: "enabled",
-                    render: function (data, type, row) {
-                        if (data === true) {
-                            return '<span class="badge bg-success">Enabled</span>'
-                        }
-                        if (data === false) {
-                            return '<span class="badge bg-secondary">Disabled</span>'
-                        }
-                    } ,
-                    title: "Enabled"
-                    },
-                    {data: "config_id",
-                    render: function (data, type, row, meta) {
-                        return '<button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-edit"></i> Edit </button>'
-                    },
+            //Load All configs on page load
+            loadAll();
 
-                    title: "Actions"}]
+            //Event handlers
+
+            $('#group-tab').on('click', function() {
+                loadGroups();
             });
-        });
+            $('#branch-tab').on('click', function() {
+                loadBranches();
+            });
+
+            $('#editconfig').on('click', function() {
+                let configId = $(this).data('data-config-id');
+                openConfigModal;
+            })
+            //Initialize DataTables
+                function loadAll() {
+                $('#config_table').kohaTable({
+                    "ajax": {
+                        url: '/api/v1/contrib/ums/configs',
+                        method: 'GET'
+                    },
+                    "columns": [
+                        {data: "config_id",
+                        title: "Configuration ID"
+                        },
+                        {data: "config_type",
+                        render: function (data, type, row) {
+                            if (data === "global") {
+                                return 'Global configuration'}
+                            if (data === "branch") {
+                                return 'Branch configuration'}
+                            if (data === "group") {
+                                return 'Group configuration'}
+                            },
+                        title: "Configuration Type"
+                        },
+                        {data: "enabled",
+                        render: function (data, type, row) {
+                            if (data === 1) {
+                                return '<span class="badge bg-success">Enabled</span>'
+                            }
+                            if (data === 0) {
+                                return '<span class="badge bg-secondary">Disabled</span>'
+                            }
+                        } ,
+                        title: "Enabled"
+                        },
+                        {data: "config_id",
+                        render: function (data, type, row, meta) {
+                            return '<button type= "button" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-edit"></i> Edit </button>  <button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-trash"></i> Delete </button>'
+
+                        },
+
+                        title: "Actions"}]
+            });
+                };
+                function loadGroups () {
+                $('#group_table').kohaTable({
+                    "bDestroy": true,
+                    "ajax": {
+                        url: '/api/v1/contrib/ums/configs',
+                        method: 'GET'
+                    },
+                    "columns": [
+                        {data: "config_id",
+                        title: "Configuration ID"
+                        },
+                        {data: "config_type",
+                        render: function (data, type, row) {
+                            if (data === "global") {
+                                return 'Global configuration'}
+                            if (data === "branch") {
+                                return 'Branch configuration'}
+                            if (data === "group") {
+                                return 'Group configuration'}
+                            },
+                        title: "Configuration Type"
+                        },
+                        {data: "enabled",
+                        render: function (data, type, row) {
+                            if (data === 1) {
+                                return '<span class="badge bg-success">Enabled</span>'
+                            }
+                            if (data === 0) {
+                                return '<span class="badge bg-secondary">Disabled</span>'
+                            }
+                        } ,
+                        title: "Enabled"
+                        },
+                        {data: "config_id",
+                        render: function (data, type, row, meta) {
+                            return '<button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-edit"></i> Edit </button>  <button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-trash"></i> Delete </button>'
+                        },
+
+                        title: "Actions"}]
+            });
+                }
+                function loadBranches() {
+                $('#branch_table').kohaTable({
+                    "bDestroy": true,
+                    "ajax": {
+                        url: '/api/v1/contrib/ums/configs',
+                        method: 'GET'
+                    },
+                    "columns": [
+                        {data: "config_id",
+                        title: "Configuration ID"
+                        },
+                        {data: "config_type",
+                        render: function (data, type, row) {
+                            if (data === "global") {
+                                return 'Global configuration'}
+                            if (data === "branch") {
+                                return 'Branch configuration'}
+                            if (data === "group") {
+                                return 'Group configuration'}
+                            },
+                        title: "Configuration Type"
+                        },
+                        {data: "enabled",
+                        render: function (data, type, row) {
+                            if (data === 1) {
+                                return '<span class="badge bg-success">Enabled</span>'
+                            }
+                            if (data === 0) {
+                                return '<span class="badge bg-secondary">Disabled</span>'
+                            }
+                        } ,
+                        title: "Enabled"
+                        },
+                        {data: "config_id",
+                        render: function (data, type, row, meta) {
+                            return '<button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-edit"></i> Edit </button>  <button class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"> <i class="fa fa-trash"></i> Delete </button>'
+                        },
+
+                        title: "Actions"}]
+            });
+                };
+            function saveConfig() {
+                
+                let configData = {
+                    additional_email: $('#additional_email').val(),
+                    branch: $('#umsconfig_id_select').val(),
+                    clear_below: $('#clear_below').val(),
+                    clear_threshold: $('#clear_threshold').val(),
+                    collections_flag: $('#collections_flag').val(),
+                    config_group: $('#umsconfig_id_select').val(),
+                    config_name: $('#config_name').val(),
+                    config_type: configtype,
+                    day_of_week: $('#run_on_dow').val(),
+                    debit_type: $('#debit_type').val(),
+                    enabled: $('#config-enabled').val(),
+                    exemption_flag: $('#exemption_flag').val(),
+                    fees_newer: $('#fees_starting_age').val(),
+                    fees_older: $('#fees_ending_age').val(),
+                    ignore_before: $('#fees_created_before_date_filter').val(),
+                    patron_categories: $('#umsconfig_categories').val(),
+                    processing_fee: $('#processing_fee').val(),
+                    remove_minors: $('#age_limitation').val(),
+                    require_lost_fee: $('#require_lost_fee').val(),
+                    restriction: $('#add_restriction').val(),
+                    sftp_host: $('#sftp_host').val(),
+                    sftp_password: $('#sftp_password').val(),
+                    sftp_user: $('#sftp_user').val(),
+                    threshold: $('#threshold').val(),
+                    unique_email: $('#unique_email').val()
+                };
+                let url = '/api/v1/contrib/ums/configs'
+                let method = 'POST';
+
+
+                $.ajax({
+                        url: url,
+                    method: method,
+                    data: JSON.stringify(jobData),
+                    contentType: 'application/json',
+                    success: function(data) {
+                        showMessage(configId ? 'Config updated successfully' : 'Config created successfully', 'success');
+                        $('#UMSConfigModel').modal('hide');
+                        loadConfigs();
+                    },
+                    error: function(xhr, status, error) {
+                        let message = 'Failed to save config';
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            message += ': ' + xhr.responseJSON.error;
+                        }
+                        showMessage(message, 'danger');
+                    }
+                  });
+              }
+
+            function openConfigModal(configId = null) {
+                console.log(configId);
+                if (configId) {
+                    //Edit existing configs
+                    loadConfigForEdit(configId);
+                }
+            }
+
+            function loadConfigForEdit(configId) {
+                                console.log("edit clicked");
+                $.ajax({
+                    url: '/api/v1/contrib/ums/configs/' + configId,
+                    method: 'GET',
+                    success: function(config) {
+                        $('#additional_email').val(config.additional_email);
+                        $('#branch').val(config.branch);
+                        $('#clear_below').val(config.clear_below);
+                        $('#clear_threshold').val(config.clear_threshold);
+                        $('#collections_flag').val(config.collections_flag);
+                        $('#config_group').val(config.config_group);
+                        $('#config_id').val(config.config_id);
+                        $('#config_name').val(config.config_name);
+                        $('#config_type').val(config.config_type);
+                        $('#day_of_week').val(config.day_of_week);
+                        $('#debit_type').val(config.debit_type);
+                        $('#enabled').val(config.enabled);
+                        $('#exemptions_flag').val(config.exemptions_flag);
+                        $('#fees_newer').val(config.fees_newer);
+                        $('#fees_older').val(config.fees_older);
+                        $('#ignore_before').val(config.ignore_before);
+                        $('#patron_categories').val(config.patron_categories);
+                        $('#processing_fee').val(config.processing_fee);
+                        $('#remove_minors').val(config.remove_minors);
+                        $('#restriction').val(config.restriction);
+                        $('#sftp_host').val(config.sftp_host);
+                        $('#sftp_password').val(config.sftp_password);
+                        $('#sftp_user').val(config.sftp_user);
+                        $('#threshold').val(config.threshold);
+                        $('#unique_email').val(config.unique_email);
+                        $('#require_lost_fee').val(config.require_lost_fee);
+                    }
+                })
+            }
+            
+            });
 </script>
 [% END %]
 [% END %]<!--wrapper-->

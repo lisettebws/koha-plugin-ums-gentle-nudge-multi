@@ -132,11 +132,11 @@ sub add {
         $c->unhandled_exception($_);
     }
 };
- =head3 update
+=head3 update
 
  Update an existing config
 
- =cut
+=cut
 
  sub _update_config {
     my $c = shift->openapi->valid_input or return;
@@ -170,8 +170,6 @@ sub add {
     return try {
         my $config = Koha::UMSConfig->find({config_id => $config_id });
         
-        
-        
         {
             additional_email => $additional_email,
             branch    => $branch,
@@ -198,7 +196,7 @@ sub add {
             sftp_user => $sftp_user,
             threshold => $threshold,
             unique_email => $unique_email
-        });
+        };
 
         $config->store;
 
@@ -211,3 +209,4 @@ sub add {
         $c->unhandled_exception($_);
     }
 };
+1;

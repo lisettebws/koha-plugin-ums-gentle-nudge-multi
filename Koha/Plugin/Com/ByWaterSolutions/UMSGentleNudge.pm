@@ -19,6 +19,7 @@ use Koha::Library::Groups;
 use Koha::Patron::Attribute::Types;
 use Koha::Patron::Debarments qw(AddDebarment);
 use Koha::Patrons;
+use Koha::Plugins;
 use Koha::Schema;
 
 use File::Path qw( make_path );

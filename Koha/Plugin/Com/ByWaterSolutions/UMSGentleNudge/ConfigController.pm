@@ -24,7 +24,7 @@ List all configs
 
 sub list {
 my $c = shift->openapi->valid_input or return;
-
+ 
 return try {
     return $c->render(
 	    status  => 200,

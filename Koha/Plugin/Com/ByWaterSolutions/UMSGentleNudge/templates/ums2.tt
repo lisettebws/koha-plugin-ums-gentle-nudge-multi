@@ -546,7 +546,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                 $('#group_table').kohaTable({
                     "bDestroy": true,
                     "ajax": {
-                        url: '/api/v1/contrib/ums/configs',
+                        url: '/api/v1/contrib/ums/configs/?config_type=group',
                         method: 'GET'
                     },
                     "columns": [
@@ -587,7 +587,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                 $('#branch_table').kohaTable({
                     "bDestroy": true,
                     "ajax": {
-                        url: '/api/v1/contrib/ums/configs',
+                        url: '/api/v1/contrib/ums/configs/?config_type=branch',
                         method: 'GET'
                     },
                     "columns": [

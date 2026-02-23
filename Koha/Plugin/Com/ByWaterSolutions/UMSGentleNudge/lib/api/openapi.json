@@ -82,6 +82,13 @@
                     "name": "x-koha-request-id",
                     "required": false,
                     "type": "integer"
+                },
+                {
+                    "description": "Configuration Type",
+                    "in": "query",
+                    "name": "config_type",
+                    "required": false,
+                    "type": "string"
                 }
             ],
             "responses": {

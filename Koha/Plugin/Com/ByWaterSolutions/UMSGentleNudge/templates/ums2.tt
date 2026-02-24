@@ -111,7 +111,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-3" id="config_id_selector">
                                     <label for="umsconfig_id">Configuration for: </label>
                                     
                                     <select name="umsconfig_selector" id="umsconfig_id_select" class="form-control">
@@ -139,14 +139,14 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-6">
                                     <label for="run_on_dow">Day of week to send <i id="info_added" data-bs-toggle="tooltip" title="Please ensure that your system administrator has enabled the cronjob plugins_nightly.pl." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="run_on_dow" class="form-control">
-                                        <option value="0" [% IF run_on_dow == 0 %]selected="selected"[% END %]>Sunday</option>
-                                        <option value="1" [% IF run_on_dow == 1 %]selected="selected"[% END %]>Monday</option>
-                                        <option value="2" [% IF run_on_dow == 2 %]selected="selected"[% END %]>Tuesday</option>
-                                        <option value="3" [% IF run_on_dow == 3 %]selected="selected"[% END %]>Wednesday</option>
-                                        <option value="4" [% IF run_on_dow == 4 %]selected="selected"[% END %]>Thursday</option>
-                                        <option value="5" [% IF run_on_dow == 5 %]selected="selected"[% END %]>Friday</option>
-                                        <option value="6" [% IF run_on_dow == 6 %]selected="selected"[% END %]>Saturday</option>
+                                    <select name="run_on_dow" id="run_on_dow" class="form-control">
+                                        <option value="0">Sunday</option>
+                                        <option value="1">Monday</option>
+                                        <option value="2">Tuesday</option>
+                                        <option value="3">Wednesday</option>
+                                        <option value="4">Thursday</option>
+                                        <option value="5">Friday</option>
+                                        <option value="6">Saturday</option>
                                       </select>
                                     
                                   </div>
@@ -156,7 +156,7 @@
                             <div class="col-md-12">
                                 <div class="form-group mb-12">
                                     <label for="umsconfig_categories">Patron categories <i id="info_added" data-bs-toggle="tooltip" title="Leave blank for all categories. multiple values can be selected with ctrl+click or shift+click." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="umsconfig_categories" multiple="multiple">
+                                    <select name="umsconfig_categories" id="umsconfig_categories" multiple="multiple">
                                     [% FOREACH category IN Categories.all() %]
                                         <option value="[% category.categorycode %]">[% category.description %]</option>
                                     [% END %]
@@ -171,7 +171,7 @@
                                     <label for="fees_threshold">Threshold <i id="info_added" data-bs-toggle="tooltip" title="Minimum amount owed to be sent to collections." data-bs-placement="right" class="fa fa-info-circle"></i><label>
                                     <div class="input-group">
                                         <div class="input-group-addon">$</div> 
-                                            <input type="fees_threshold" name="fees_threshold" class="form-control" value="[% fees_threshold %]">
+                                            <input type="fees_threshold" name="fees_threshold" id="fees_threshold" class="form-control">
                                       </div>
                                   </div>
                               </div>
@@ -180,7 +180,7 @@
                                     <label for="processing_fee">Processing fee <i id="info_added" data-bs-toggle="tooltip" title="Amount of the processing fee added to the patron's account." data-bs-placement="right" class="fa fa-info-circle"></i><label>
                                     <div class="input-group">
                                         <div class="input-group-addon">$ </div>
-                                        <input type="processing_fee" name="processing_fee" class="form-control" value="[% processing_fee %]">
+                                        <input type="processing_fee" name="processing_fee" id="processing_fee" class="form-control">
                                       </div>
                                   </div>
                               </div>
@@ -189,7 +189,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="require_lost_fee">Require lost fee <i id="info_added" data-bs-toggle="tooltip" title="If enabled, a patron will not be sent to collections unless at least one of their outstanding fees is a lost fee of any amount." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="require_lost_fee" class="form-control">
+                                    <select name="require_lost_fee" id="require_lost_fee" class="form-control">
                                         <option value="no" [% IF require_lost_fee == "no" %]selected="selected"[% END %]>No</option>
                                         <option value="yes" [% IF require_lost_fee == "yes" %]selected="selected"[% END %]>Yes</option>
                                     </select>
@@ -201,7 +201,7 @@
 
                                 <div class="form-group mb-3">
                                     <label for="processing_debit">Processing fee debit type <i id="info_added" data-bs-toggle="tooltip" title="Which debit type will be used" data-bs-placement="right" class="fa fa-info-circle"></i><label>
-                                    <select name="processing_debit" class="form-control">
+                                    <select name="processing_debit" id="processing_debit" class="form-control">
                                             <option value="" selected="selected"> Select an attribute</option>
                                         [% FOREACH debit_type IN debit_types %]
                                             <option value="[% debit_type.code | html %]" selected="selected">[% debit_type.description | html %]</option>
@@ -215,10 +215,10 @@
                                 <div class="form-group mb-3">
                                     <label for="collections_flag">Collections flag <i id="info_added" data-bs-toggle="tooltip" title="Specify the how the patron is flagged as being in collections.
 
-If using a patron attribute, it is recommended that the attribute be mapped to the YES_NO authorised value category.
+    If using a patron attribute, it is recommended that the attribute be mapped to the YES_NO authorised value category.
 
 If using another category, the authorized values should be 0 and 1, but the descriptions can be set to your preference." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="collections_flag" class="form-control">
+                                    <select name="collections_flag" id="collections_flag" class="form-control">
                                         <option value="" selected="selected"> Select an attribute</option>
                                         <option value="sort1" [% IF collections_flag == "sort1" %]selected="selected"[% END %]>sort1</option>
                                         <option value="sort2" [% IF collections_flag == "sort2" %]selected="selected"[% END %]>sort2</option>
@@ -235,7 +235,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
  If using a patron attribute, it is recommended that the attribute be mapped to the YES_NO authorised value category.
 
  If using another category, the authorized values should be 0 and 1, but the descriptions can be set to your preference." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="exemption_flag" class="form-control">
+                                    <select name="exemption_flag" id="exemption_flag" class="form-control">
                                         <option value="" selected="selected"> Select an attribute</option>
                                         <option value="sort1" [% IF exemption_flag == "sort1" %]selected="selected"[% END %]>sort1</option>
                                         <option value="sort2" [% IF exemption_flag == "sort2" %]selected="selected"[% END %]>sort2</option>
@@ -249,13 +249,13 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="fees_starting_age">Count fees newer than <i id="info_added" data-bs-toggle="tooltip" title="Fees newer than this number of days will be totaled to check if a patron should be sent to collections." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <input type="text" name="fees_starting_age" class="form-control" value="[% fees_starting_age %]">
+                                    <input type="text" name="fees_starting_age" id="fees_starting_age" class="form-control" value="[% fees_starting_age %]">
                                   </div>
                               </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="fees_ending_age">Count fees older than <i id="info_added" data-bs-toggle="tooltip" title="Fees older than this number of days will be totaled to check if a patron should be sent to collections." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <input type="text" name="fees_ending_age" class="form-control" value="[% fees_ending_age %]">
+                                    <input type="text" name="fees_ending_age" id="fees_ending_age" class="form-control" value="[% fees_ending_age %]">
                                    </div>
                               </div>
                           </div>
@@ -263,26 +263,26 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-12">
                                 <div class="form-group mb-3">
                                     <label for="fees_created_before_date_filter">Ignore fees created before this date <i id="info_added" data-bs-toggle="tooltip" title="Fees created before this date will not be part of the total used to check if a patron should be sent to collections." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <input type="text" id="fees_created_before_date_filter" size="10" name="fees_created_before_date_filter" class="flatpickr" value="[% fees_created_before_date_filter | html %]"/>
+                                    <input type="text" id="fees_created_before_date_filter" size="10" id=" fees_created_before_date_filter" name="fees_created_before_date_filter" class="flatpickr" value="[% fees_created_before_date_filter | html %]"/>
                                   </div>
                               </div>
                           </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="auto_clear_paid">Clear flag when balance at or below threshold <i id="info_added" data-bs-toggle="tooltip" title="If enabled, patrons who have paid off all they owe will have the collections flag removed automatically." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select class="form-control">
-                                        <option value="yes" [% IF auto_clear_paid == "yes" %]selected="selected"[% END %]>Yes</option>
-                                        <option value="no" [% IF auto_clear_paid == "no" %]selected="selected"[% END %]>No</option>
+                                    <label for="clear_below">Clear flag when balance at or below threshold <i id="info_added" data-bs-toggle="tooltip" title="If enabled, patrons who have paid off all they owe will have the collections flag removed automatically." data-bs-placement="right" class="fa fa-info-circle"></i></label>
+                                    <select class="form-control" id="clear_below">
+                                        <option value="1" [% IF auto_clear_paid == "yes" %]selected="selected"[% END %]>Yes</option>
+                                        <option value="0" [% IF auto_clear_paid == "no" %]selected="selected"[% END %]>No</option>
                                     </select>
                                   </div>
                               </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                    <label for="auto_clear_paid_threshold">Clear collections flag threshold <i id="info_added" data-bs-toggle="tooltip" title="If set, the patron will be cleared from collections if if they do not exceed this threshold." data-bs-placement="right" class="fa fa-info-circle"></i></label>
+                                    <label for="clear_threshold">Clear collections flag threshold <i id="info_added" data-bs-toggle="tooltip" title="If set, the patron will be cleared from collections if if they do not exceed this threshold." data-bs-placement="right" class="fa fa-info-circle"></i></label>
                                     <div class="input-group">
                                         <div class="input-group-addon">$ </div>
-                                    <input type="text" name="auto_clear_paid_threshold" class="form-control" value="[% auto_clear_paid_threshold || 0 %]">
+                                    <input type="text" name="clear_threshold" id="clear_threshold" class="form-control" value="[% auto_clear_paid_threshold || 0 %]">
                                       </div>
                                   </div>
                               </div>
@@ -291,7 +291,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="add_restriction">Add restriction for patrons entering collections <i id="info_added" data-bs-toggle="tooltip" title="If enabled, newly flag patrons will have a restriction added to their record." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="add_restriction" class="form-control">
+                                    <select name="add_restriction" id="add_restriction" class="form-control">
                                         <option value="yes" [% IF add_restriction == "yes" %]selected="selected"[% END %]>Yes</option>
                                         <option value="no" [% IF add_restriction == "no" %]selected="selected"[% END %]>No</option>
                                     </select>
@@ -300,7 +300,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="remove_restriction">Remove restriction for patrons leaving collections <i id="info_added" data-bs-toggle="tooltip" title="If enabled, patrons that have paid their debt will have any restrictions added when entering collections removed automatically." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="remove_restriction" class="form-control">
+                                    <select name="remove_restriction" id="remove_restriction" class="form-control">
                                         <option value="yes" [% IF remove_restriction == "yes" %]selected="selected"[% END %]>Yes</option>
                                         <option value="no" [% IF remove_restriction == "no" %]selected="selected"[% END %]>No</option>
                                       </select>
@@ -311,7 +311,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="age_limitation">Remove minors from collections report <i id="info_added" data-bs-toggle="tooltip" title="If enabled, patrons under the age of 18 years old will not be included on the collections report." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <select name="age_limitation" class="form-control">
+                                    <select name="age_limitation" id="age_limitation" class="form-control">
                                         <option value="yes" [% IF age_limitation == "yes" %]selected="selected"[% END %]>Yes</option>
                                         <option value="no" [% IF age_limitation == "no" %]selected="selected"[% END %]>No</option>
                                     </select>
@@ -329,13 +329,13 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="unique_email">Unique email address <i id="info_added" data-bs-toggle="tooltip" title="Email address provided to you by Unique Management Systems to email reports to.</" data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <input type="text" name="unique_email" class="form-control" value="[% unique_email %]">
+                                    <input type="text" name="unique_email" id="unique_email" class="form-control" value="[% unique_email %]">
                                   </div>
                               </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="cc_email">Additional email address <i id="info_added" data-bs-toggle="tooltip" title="If you would like to send the report to another email address as well, enter it here." data-bs-placement="right" class="fa fa-info-circle"></i></label>
-                                    <input type="text" name="cc_email" class="form-control" value="[% cc_email %]">
+                                    <input type="text" name="cc_email" id="cc_email" class="form-control" value="[% cc_email %]">
                                   </div>
                               </div>
                           </div>
@@ -358,6 +358,7 @@ If using another category, the authorized values should be 0 and 1, but the desc
             </div> <!-- /.modal-dialog -->
         </form> <!-- /#config_form -->
       </div> <!-- /#newConfigModal -->    
+
         <!-- Delete Configuration Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label">
       <form id="deleteForm">
@@ -386,7 +387,12 @@ If using another category, the authorized values should be 0 and 1, but the desc
     </div>
     </div><!--end panel div-->
   </body>
+<style>
+    .hideme {
+        display:none;
+    }
 
+</style>
             [% MACRO jsinclude BLOCK %]
     [% Asset.js("js/admin-menu.js") | $raw %]
     [% Asset.css("css/humanmsg.css") | $raw %]
@@ -402,8 +408,9 @@ If using another category, the authorized values should be 0 and 1, but the desc
             //Button that triggered the modal
             var button = event.relatedTarget
             // Extract info from data-bs-* attributes
-            var configtype = button.getAttribute('data-bs-type')
+             configtype = button.getAttribute('data-bs-type')
             var umsmode = button.getAttribute('data-bs-mode')
+            var ums_id = button.getAttribute('data-config-id')
 
             //update the modal content
             //These get information from the button that was clicked
@@ -411,13 +418,19 @@ If using another category, the authorized values should be 0 and 1, but the desc
             var modalTypeInput = UMSConfigModel.querySelector('.modal-type')
             var modalTypeSelector = modalTypeSelector + configtype
             var modalIDSelect = '.' + configtype + '_option';
-            console.log('mode:' + umsmode + '/modaltitle: ' + modalTitle + ' / modalTypeInput: ' + modalTypeInput + ' / modalTypeSelector: '  + modalTypeSelector  + ' / modalIDSelect: ' + modalIDSelect);
+            console.log('id:' + ums_id +' /mode:' + umsmode + '/modaltitle: ' + modalTitle + ' / modalTypeInput: ' + modalTypeInput + ' / modalTypeSelector: '  + modalTypeSelector  + ' / modalIDSelect: ' + modalIDSelect);
             //Sets the title dynamicly: Mode (New/Edit) type(global, group, or branch) configuration
             modalTitle.textContent = umsmode + ' ' + configtype + ' configuration'
             var modalSelector = UMSConfigModel.querySelector('.modal-select-type');
             modalSelector.textContent = 'Select a ' + configtype
+            if (configtype == 'global'){
+                modalSelector.textContent = 'Global'
+            };
+            if (umsmode == "Edit") loadConfigForEdit();
+
             
         //show the appropriate choices in the branch/group dropdown
+
            // Array.from(document.querySelectorAll("." + configtype +"_option")).forEach(e =>e.removeAttribute("hidden"));
            $("." + configtype +"_option").each(function(){
             $("." + configtype +"_option").removeAttr('hidden');
@@ -430,8 +443,45 @@ If using another category, the authorized values should be 0 and 1, but the desc
               );
           });
         });
+        
 
+            function loadConfigForEdit() {
+                                console.log("edit clicked");
+                $.ajax({
+                    url: '/api/v1/contrib/ums/config/' + event.relatedTarget.getAttribute('data-config-id'),
+                    method: 'GET',
+                    success: function(config) {
+                    console.log(config);
+                    console.log(config.additional_email);
 
+                        if (config.config_type == "branch") {
+                            document.getElementById("umsconfig_id_select").value = config.branch;
+                        } 
+                        if (config.config_type== "group") {
+                            document.getElementById("umsconfig_id_select").value = config.config_group;
+                        };
+                        document.getElementById("cc_email").value = config.additional_email;
+                        document.getElementById("clear_below").value = config.clear_below;
+                        document.getElementById("clear_threshold").value = config.clear_threshold;
+                        document.getElementById("collections_flag").value = config.collections_flag;
+                        document.getElementById("run_on_dow").value = config.day_of_week;
+                        document.getElementById("processing_debit").value = config.debit_type;
+                        document.getElementById("config-enabled").value = config.enabled;
+                        document.getElementById("exemption_flag").value = config.exemptions_flag;
+                        document.getElementById("fees_starting_age").value = config.fees_newer;
+                        document.getElementById("fees_ending_age").value = config.fees_older;
+                        document.getElementById("fees_created_before_date_filter").value = config.ignore_before;
+                        document.getElementById("umsconfig_categories").value = config.patron_categories;
+                        document.getElementById("processing_fee").value = config.processing_fee;
+                        document.getElementById("age_limitation").value = config.remove_minors;
+                        document.getElementById("add_restriction").value = config.restriction;
+                        document.getElementById("fees_threshold").value = config.threshold;
+                        document.getElementById("unique_email").value = config.unique_email;
+                        document.getElementById("require_lost_fee").value = config.require_lost_fee;
+                        
+                    }
+                })
+            }
         $(document).ready(function() {
             //Load All configs on page load
             loadAll();
@@ -494,8 +544,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         {data: "config_id",
                         render: function (data, type, row, meta) {
                             if (data === 1) 
-                                {return '<button type="button" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>'
-                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>  <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>  <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
+                                {return '<button type="button" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>'
+                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>  <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>  <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
                             }
                         },
 
@@ -556,6 +606,32 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         },
                         {data: "config_name",
                         title: "Configuration Name"
+                        },
+                        {data: "day_of_week",
+                        render: function (data, type, row) {
+                            if (data === 0) {
+                                return 'Sunday'
+                            }
+                            if (data === 1) {
+                                return 'Monday'
+                            }
+                            if (data === 2) {
+                                return 'Tuesday'
+                            }
+                            if (data === 3) {
+                                return 'Wednesday'
+                            }
+                            if (data === 4) {
+                                return 'Thursday'
+                            }
+                            if (data === 5) {
+                                return 'Friday'
+                            }
+                            if (data === 6) {
+                                return 'Saturday'
+                            }
+                        },
+                        title: "Day of Week"
                         },
                         {data: "config_type",
                         render: function (data, type, row) {
@@ -643,48 +719,14 @@ If using another category, the authorized values should be 0 and 1, but the desc
                   });
               }
 
-            function openConfigModal(configId = null) {
-                console.log(configId);
+            function openConfigModal() {
+                console.log(ums_id);
                 console.log('testing');
-                if (configId) {
+                if (ums_id) {
                     //Edit existing configs
-                    loadConfigForEdit(configId);
+                    loadConfigForEdit(ums_id);
                 }
-            }
-
-            function loadConfigForEdit(configId) {
-                                console.log("edit clicked");
-                $.ajax({
-                    url: '/api/v1/contrib/ums/configs/' + configId,
-                    method: 'GET',
-                    success: function(config) {
-                        $('#additional_email').val(config.additional_email);
-                        $('#branch').val(config.branch);
-                        $('#clear_below').val(config.clear_below);
-                        $('#clear_threshold').val(config.clear_threshold);
-                        $('#collections_flag').val(config.collections_flag);
-                        $('#config_group').val(config.config_group);
-                        $('#config_id').val(config.config_id);
-                        $('#config_name').val(config.config_name);
-                        $('#config_type').val(config.config_type);
-                        $('#day_of_week').val(config.day_of_week);
-                        $('#debit_type').val(config.debit_type);
-                        $('#enabled').val(config.enabled);
-                        $('#exemptions_flag').val(config.exemptions_flag);
-                        $('#fees_newer').val(config.fees_newer);
-                        $('#fees_older').val(config.fees_older);
-                        $('#ignore_before').val(config.ignore_before);
-                        $('#patron_categories').val(config.patron_categories);
-                        $('#processing_fee').val(config.processing_fee);
-                        $('#remove_minors').val(config.remove_minors);
-                        $('#restriction').val(config.restriction);
-                        $('#threshold').val(config.threshold);
-                        $('#unique_email').val(config.unique_email);
-                        $('#require_lost_fee').val(config.require_lost_fee);
-                    }
-                })
-            }
-            
+            }            
             });
 </script>
 [% END %]

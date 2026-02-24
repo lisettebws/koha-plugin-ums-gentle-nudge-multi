@@ -307,7 +307,7 @@
       }
     }
   },
- "/configs/{config_id}": {
+ "/config/{config_id}": {
     "get": {
       "x-mojo-to": "Com::ByWaterSolutions::UMSGentleNudge::ConfigController#get",
       "operationId": "getConfig",

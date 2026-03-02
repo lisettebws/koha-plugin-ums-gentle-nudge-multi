@@ -7,7 +7,7 @@ use Koha::Plugin::Com::ByWaterSolutions::UMSGentleNudge;
 use Koha::UMSConfigs;
 use Koha::UMSConfig;
 use Data::Dumper qw( Dumper );
-
+use Koha::Library::Groups;
 
 =head1 NAME
 
@@ -90,6 +90,11 @@ sub add {
     my $restriction = $c->req->json->{'restriction'};
     my $threshold = $c->req->json->{'threshold'};
     my $unique_email = $c->req->json->{'unique_email'};
+
+    if ($config_type == "group") {
+        my $group = Koha::Library::Groups->find($config_group);
+        $config_name = $group->title;
+    }
     return try {
         my $config = Koha::UMSConfig->new({
             additional_email => $additional_email,
@@ -138,10 +143,8 @@ sub add {
     my $c = shift->openapi->valid_input or return;
     my $config_id = $c->param('config_id');
     my $config = Koha::UMSConfigs->find({ config_id => $config_id });
-            warn "LISETTE: " . ($c);
-     warn "LISETTE " . $config_id;
+
     my $additional_email = $c->req->json->{'additional_email'};
-    #warn "Lisette" . $additional_email;
     my $branch = $c->req->json->{'branch'};
     my $clear_below = $c->req->json->{'clear_below'};
     my $clear_threshold = $c->req->json->{'clear_threshold'};
@@ -163,9 +166,6 @@ sub add {
     my $threshold = $c->req->json->{'threshold'};
     my $unique_email = $c->req->json->{'unique_email'};
 
-    
-            #my $config = Koha::UMSConfig->find({ config_id => $config_id });
-            #warn "LISETTE: " . ($config);
     return try {
         my $old_config = $config;
         {
@@ -207,30 +207,4 @@ sub add {
     }
 };
 
-
-
-=head3 Enable
- Enable a configuration
-=cut
-my $config_id='';
-sub Enable {
-    my $c = shift->openapi->valid_input or return;
-    my $enabled = $c->req->json->{'enabled'};
-
-        return try {
-        my $config = Koha::UMSConfig->find({config_id => $config_id });
-};};
-
-=head3 Disable
- Disable a configuration
-=cut
-
-sub Disable {
-    my $c = shift->openapi->valid_input or return;
-    my $enabled = $c->req->json->{'enabled'};
-
-        return try {
-        my $config = Koha::UMSConfig->find({config_id => $config_id });
-};
-};
 1;

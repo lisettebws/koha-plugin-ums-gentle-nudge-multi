@@ -358,17 +358,6 @@ If using another category, the authorized values should be 0 and 1, but the desc
             </div> <!-- /.modal-dialog -->
         </form> <!-- /#config_form -->
       </div> <!-- /#newConfigModal -->    
-    <!-- Toggle Module -->
-    <div class="modal fade" id="UMSToggleModal" tabindex="-1" role="dialog" aria-labelledby="toggle-modal-label">
-        <form id= "modalForm">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                            <h1 class="modal-title" id="delete-modal-label">Toggle Configuration</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
         <!-- Delete Configuration Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label">
       <form id="deleteForm">
@@ -454,15 +443,6 @@ If using another category, the authorized values should be 0 and 1, but the desc
               );
           });
         });
-        toggleid='';
-        UMSToggleModel = document.getElementById('UMSToggleModal')
-        UMSToggleModel.addEventListener('show.bs.modal', function (event){
-        var button = event.relatedTarget
-        // Extract info from data-bs-* attributes
-            toggleid = button.getAttribute('data-toggle-id')
-
-        });
-
 
             function loadConfigForEdit() {
                                 console.log("edit clicked");
@@ -470,8 +450,6 @@ If using another category, the authorized values should be 0 and 1, but the desc
                     url: '/api/v1/contrib/ums/config/' + event.relatedTarget.getAttribute('data-config-id'),
                     method: 'GET',
                     success: function(config) {
-                    console.log(config);
-                    console.log(config.additional_email);
 
                         if (config.config_type == "branch") {
                             document.getElementById("umsconfig_id_select").value = config.branch;
@@ -518,10 +496,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
 
             $('#editconfig').on('click', function() {
                 let configId = $(this).data('data-config-id');
-                warn ("editconfig");
                 openConfigModal();
             });
-
             // Form submissions
             $('#config_form').on('submit', function(e) {
                 e.preventDefault();
@@ -552,8 +528,22 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         title: "Configuration Type"
                         },
                         {data: "threshold",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
                         title: "Threshold"},
                         {data: "processing_fee",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
                         title: "Processing Fee"},
                         {data: "enabled",
                         render: function (data, type, row) {
@@ -569,22 +559,14 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         {data: "config_id",
                         render: function (data, type, row, meta) {
                             if (data === 1) 
-                                {return '<button type="button" data-bs-tab="all" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>'
-                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>  <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>  <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
+                                {return '<button type="button" data-bs-tab="branchTab" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>'
+                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
                             }
                         },
 
                         title: "Actions"}]
             });
                 };
-                function toggleConfigStatus(config_id,enabled){
-                    let toggle = enabled ? 'enable' : 'disable';
-                    $.ajax({
-                        url: '/api/v1/contrib/ums/config/' + config_id + '/' + toggle,
-                        method: 'POST',
-                    })
-                }
-
 
                 function loadGroups () {
                 $('#group_table').kohaTable({
@@ -594,8 +576,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         method: 'GET'
                     },
                     "columns": [
-                        {data: "config_id",
-                        title: "Configuration ID"
+                        {data: "config_name",
+                        title: "Configuration Name"
                         },
                         {data: "config_type",
                         render: function (data, type, row) {
@@ -608,6 +590,24 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             },
                         title: "Configuration Type"
                         },
+                        {data: "threshold",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
+                        title: "Threshold"},
+                        {data: "processing_fee",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
+                        title: "Processing Fee"},
                         {data: "enabled",
                         render: function (data, type, row) {
                             if (data === 1) {
@@ -622,8 +622,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         {data: "config_id",
                         render: function (data, type, row, meta) {
                             if (data === 1) 
-                                {return '<button type="button" data-bs-tab="groupTab" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>'
-                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>  <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>  <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
+                                {return '<button type="button" data-bs-tab="branchTab" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>'
+                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
                             }
                         },
 
@@ -638,37 +638,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         method: 'GET'
                     },
                     "columns": [
-                        {data: "config_id",
-                        title: "Configuration ID"
-                        },
                         {data: "config_name",
                         title: "Configuration Name"
-                        },
-                        {data: "day_of_week",
-                        render: function (data, type, row) {
-                            if (data === 0) {
-                                return 'Sunday'
-                            }
-                            if (data === 1) {
-                                return 'Monday'
-                            }
-                            if (data === 2) {
-                                return 'Tuesday'
-                            }
-                            if (data === 3) {
-                                return 'Wednesday'
-                            }
-                            if (data === 4) {
-                                return 'Thursday'
-                            }
-                            if (data === 5) {
-                                return 'Friday'
-                            }
-                            if (data === 6) {
-                                return 'Saturday'
-                            }
-                        },
-                        title: "Day of Week"
                         },
                         {data: "config_type",
                         render: function (data, type, row) {
@@ -681,6 +652,24 @@ If using another category, the authorized values should be 0 and 1, but the desc
                             },
                         title: "Configuration Type"
                         },
+                        {data: "threshold",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
+                        title: "Threshold"},
+                        {data: "processing_fee",
+                        render: function (data, type, row) {
+                            if (data) {
+                            return '$' + data
+                            } else {
+                                return 'Not configured'
+                            }
+                        },
+                        title: "Processing Fee"},
                         {data: "enabled",
                         render: function (data, type, row) {
                             if (data === 1) {
@@ -695,8 +684,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                         {data: "config_id",
                         render: function (data, type, row, meta) {
                             if (data === 1) 
-                                {return '<button type="button" data-bs-tab="branchTab" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>'
-                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>  <button data-bs-toggle="modal" data-bs-target="#UMSToggleModel" data-bs-mode="Toggle" id="toggleconfig" class= "btn btn-xs btn-primary toggle-config" data-toggle-id="' + data+ '"><i class="fa fa-toggle-on"></i> Toggle </button>  <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
+                                {return '<button type="button" data-bs-tab="branchTab" data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary " edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button>'
+                            } else {return '<button data-bs-toggle="modal" data-bs-target="#UMSConfigModel" data-bs-mode="Edit" id ="editconfig" data-bs-type="' +row["config_type"] + '" class="btn btn-xs btn-primary edit-config" data-config-id="' + data + '"><i class="fa fa-edit"></i> Edit </button> <button data-bs-toggle="modal" data-bs-target="#UMSDeleteModel" data-bs-mode="Delete" id="deleteconfig" class= "btn btn-xs btn-primary delete-config" data-delete-id="' + data+ '"><i class="fa fa-trash"></i> Delete </button>'
                             }
                         },
 
@@ -778,8 +767,8 @@ If using another category, the authorized values should be 0 and 1, but the desc
                     //Edit existing configs
                     loadConfigForEdit(ums_id);
                 }
-            }            
-            });
+            }
+        });
 </script>
 [% END %]
 [% END %]<!--wrapper-->
